@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<launch>
+
+
+
+<arg name="robot_urdf_file" default="$(find xacro)/xacro.py '$(find fast-scnn-ros)/simulation/urdf/robot.xacro'" />
+
+
+
+<param name="robot_description" command="$(arg robot_urdf_file)" />
+
+<node name="spawn_robot_model" pkg="gazebo_ros" type="spawn_model"
+        args="-urdf -param robot_description -model robot -y 15 -z 1.15"/>
+
+
+
+
+
+
+
+ 
+</launch>
