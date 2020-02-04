@@ -79,9 +79,9 @@ def generator_loss(disc_generated_output, gen_output, target, LAMBDA):
 
 def Generator():
   down_stack = [
-    downsample(64, 4, apply_batchnorm=False), # (bs, 64, 64, 64)
-    downsample(128, 4), # (bs, 32, 32, 128)
-    downsample(256, 4), # (bs, 8, 8, 256)
+    downsample(128, 4, apply_batchnorm=False), # (bs, 64, 64, 64)
+    downsample(256, 4), # (bs, 32, 32, 128)
+    downsample(512, 4), # (bs, 8, 8, 256)
     downsample(512, 4), # (bs, 4, 4, 512)
     downsample(512, 4), # (bs, 2, 2, 512)
     downsample(512, 4), # (bs, 1, 1, 512)
@@ -94,9 +94,9 @@ def Generator():
     upsample(512, 4, apply_dropout=True), # (bs, 4, 4, 1024)
     upsample(512, 4, apply_dropout=True), # (bs, 8, 8, 1024)
     upsample(512, 4), # (bs, 16, 16, 1024)
-    upsample(256, 4), # (bs, 32, 32, 512)
+    upsample(512, 4), # (bs, 32, 32, 512)
+    upsample(256, 4), # (bs, 64, 64, 512)
     upsample(128, 4), # (bs, 64, 64, 512)
-    upsample(64, 4), # (bs, 64, 64, 512)
   ]
 
   initializer = tf.random_normal_initializer(0., 0.02)
@@ -132,9 +132,9 @@ def Discriminator():
   tar = tf.keras.layers.Input(shape=[256,256,3], name='target_image')
   x = tf.keras.layers.concatenate([inp, tar], axis = 3) # (bs, 64, 64, channels*2)
 
-  down1 = downsample(64, 4, False)(x) # (bs, 32, 32, 64)
-  down2 = downsample(128, 4)(down1) # (bs, 16, 16, 128)
-  down3 = downsample(256, 4)(down2) # (bs, 8, 8, 256)
+  down1 = downsample(128, 4, False)(x) # (bs, 32, 32, 64)
+  down2 = downsample(256, 4)(down1) # (bs, 16, 16, 128)
+  down3 = downsample(512, 4)(down2) # (bs, 8, 8, 256)
   #down4 = downsample(256, 4)(down3) # (bs, 8, 8, 256)
 
   zero_pad1 = tf.keras.layers.ZeroPadding2D()(down3) # (bs, 10, 10, 256)
@@ -196,5 +196,3 @@ def fit(x_train, y_train, x_test, y_test, batch_size, epochs, generator, discrim
 
     print ('Time taken for epoch {} is {} sec\n'.format(epoch + 1,
                                                         time.time()-start))
-
-

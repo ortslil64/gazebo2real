@@ -49,5 +49,5 @@ fit(x_train = train_images,
     generator_optimizer = generator_optimizer,
     discriminator_optimizer = discriminator_optimizer)
 
-generator.save_weights('weights/model')
+generator.save_weights('semantic_predictor_weights/model')
 
