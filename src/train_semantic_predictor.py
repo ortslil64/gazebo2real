@@ -8,10 +8,17 @@ from tqdm import tqdm
 from cgan import Generator, Discriminator, fit
 
 
+initial_learning_rate = 1e-4
+lr_schedule = tf.keras.optimizers.schedules.ExponentialDecay(
+    initial_learning_rate,
+    decay_steps=1000,
+    decay_rate=0.97,
+    staircase=True)
+
 generator = Generator()
 discriminator = Discriminator() 
-generator_optimizer = tf.keras.optimizers.Adam(1e-4, beta_1=0.5)
-discriminator_optimizer = tf.keras.optimizers.Adam(1e-4, beta_1=0.5)
+generator_optimizer = tf.keras.optimizers.Adam(lr_schedule, beta_1=0.5)
+discriminator_optimizer = tf.keras.optimizers.Adam(lr_schedule, beta_1=0.5)
 
 
 
@@ -42,7 +49,7 @@ fit(x_train = train_images,
     y_train = train_masks,
     x_test = val_images,
     y_test = val_masks,
-    batch_size = 32,
+    batch_size = 1,
     epochs = 300, 
     generator = generator,
     discriminator = discriminator,
