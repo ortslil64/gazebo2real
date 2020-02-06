@@ -177,6 +177,55 @@ def train_step(input_image, target, generator, discriminator, generator_optimize
                                               discriminator.trainable_variables))
   
 
+def train_step_fine(input_image, semantic_generator, scene_generator, fine_generator, fine_discriminator, generator_optimizer, discriminator_optimizer):
+    semantic_gen_output = semantic_generator([input_image], training=True)
+    scene_gen_output = scene_generator([semantic_gen_output], training=True)
+    with tf.GradientTape() as gen_tape, tf.GradientTape() as disc_tape:
+    
+
+        fine_gen_output = fine_generator([scene_gen_output], training=True)
+        disc_real_output = fine_discriminator([scene_gen_output, input_image], training=True)
+        disc_generated_output = fine_discriminator([scene_gen_output, fine_gen_output], training=True)
+    
+        gen_loss = generator_loss(disc_generated_output, fine_gen_output, input_image, LAMBDA = 50)
+        disc_loss = discriminator_loss(disc_real_output, disc_generated_output)
+
+    generator_gradients = gen_tape.gradient(gen_loss,
+                                            fine_generator.trainable_variables)
+    discriminator_gradients = disc_tape.gradient(disc_loss,
+                                                 fine_discriminator.trainable_variables)
+      
+    generator_optimizer.apply_gradients(zip(generator_gradients,
+                                            fine_generator.trainable_variables))
+    
+    discriminator_optimizer.apply_gradients(zip(discriminator_gradients,
+                                                fine_discriminator.trainable_variables))
+
+  
+
+def fit_fine(x_train, x_test, batch_size, epochs, semantic_generator, scene_generator, fine_generator, fine_discriminator, generator_optimizer, discriminator_optimizer):
+  for epoch in range(epochs):
+    start = time.time()
+    # Train
+    #x_train_shuf, y_train_shuf = shuffle(x_train, y_train)
+    N = len(x_train)//batch_size
+    for ii in range(N):
+        x_batch = np.array(x_train[ii*batch_size:batch_size*(ii+1)])
+        train_step_fine(x_batch,semantic_generator, scene_generator, fine_generator, fine_discriminator, generator_optimizer, discriminator_optimizer)
+    
+    if epoch % 1 == 0:
+        ri = np.random.choice(len(x_test))
+        semantic_gen_output = semantic_generator(x_test[ri][tf.newaxis,...], training=False)
+        scene_gen_output = scene_generator([semantic_gen_output], training=False)
+        generate_images(semantic_generator,scene_gen_output , x_test[ri][tf.newaxis,...])
+    clear_output(wait=True)
+
+   
+
+    print ('Time taken for epoch {} is {} sec\n'.format(epoch + 1,
+                                                        time.time()-start))
+  
+
 def fit(x_train, y_train, x_test, y_test, batch_size, epochs, generator, discriminator, generator_optimizer, discriminator_optimizer):
   for epoch in range(epochs):
     start = time.time()
