@@ -30,10 +30,10 @@ lr_schedule = tf.keras.optimizers.schedules.ExponentialDecay(
 
 
 semantic_generator = Generator()
-semantic_generator.load_weights('cgan_weights/model')
+semantic_generator.load_weights('semantic_predictor_weights/model')
 
 scene_generator = Generator()
-scene_generator.load_weights('semantic_predictor_weights/model')
+scene_generator.load_weights('cgan_weights/model')
 
 fine_generator = Generator() 
 fine_discriminator = Discriminator()
@@ -65,5 +65,5 @@ fit_fine(x_train = train_images,
     generator_optimizer = generator_optimizer,
     discriminator_optimizer = discriminator_optimizer)
 
-generator.save_weights('fine_tuner_weights/model')
+fine_generator.save_weights('fine_tuner_weights/model')
 

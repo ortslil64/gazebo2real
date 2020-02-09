@@ -213,11 +213,11 @@ def fit_fine(x_train, x_test, batch_size, epochs, semantic_generator, scene_gene
         x_batch = np.array(x_train[ii*batch_size:batch_size*(ii+1)])
         train_step_fine(x_batch,semantic_generator, scene_generator, fine_generator, fine_discriminator, generator_optimizer, discriminator_optimizer)
     
-    if epoch % 1 == 0:
-        ri = np.random.choice(len(x_test))
-        semantic_gen_output = semantic_generator(x_test[ri][tf.newaxis,...], training=False)
-        scene_gen_output = scene_generator([semantic_gen_output], training=False)
-        generate_images(semantic_generator,scene_gen_output , x_test[ri][tf.newaxis,...])
+    
+    ri = np.random.choice(len(x_test))
+    semantic_gen_output = semantic_generator(x_test[ri][tf.newaxis,...], training=False)
+    scene_gen_output = scene_generator([semantic_gen_output], training=False)
+    generate_images(fine_generator,scene_gen_output , x_test[ri][tf.newaxis,...])
     clear_output(wait=True)
 
    

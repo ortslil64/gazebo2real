@@ -15,7 +15,9 @@ lr_schedule = tf.keras.optimizers.schedules.ExponentialDecay(
     decay_rate=0.97,
     staircase=True)
 
+
 generator = Generator()
+#generator.load_weights('semantic_predictor_weights/model')
 discriminator = Discriminator() 
 generator_optimizer = tf.keras.optimizers.Adam(lr_schedule, beta_1=0.5)
 discriminator_optimizer = tf.keras.optimizers.Adam(lr_schedule, beta_1=0.5)
