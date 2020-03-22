@@ -260,7 +260,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://fast-scnn-ros/simulation/urdf/hokuyo.dae"/>
+        <mesh filename="package://gazebo2real/simulation/urdf/hokuyo.dae"/>
       </geometry>
     </visual>
 

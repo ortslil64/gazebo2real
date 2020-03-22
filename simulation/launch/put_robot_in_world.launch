@@ -3,7 +3,7 @@
 
 
 
-<arg name="robot_urdf_file" default="$(find xacro)/xacro.py '$(find fast-scnn-ros)/simulation/urdf/robot.xacro'" />
+<arg name="robot_urdf_file" default="$(find xacro)/xacro.py '$(find gazebo2real)/simulation/urdf/robot.xacro'" />
 
 
 

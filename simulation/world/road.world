@@ -92,8 +92,8 @@
           </geometry>
           <material>
             <script>
-              <uri>model://fast-scnn-ros/simulation/world/road/materials/scripts/</uri>
-              <uri>model://fast-scnn-ros/simulation/world/road/materials/textures/</uri>
+              <uri>model://gazebo2real/simulation/world/road/materials/scripts/</uri>
+              <uri>model://gazebo2real/simulation/world/road/materials/textures/</uri>
               <name>MyGroundPlane/Image</name>
             </script>
           </material>
