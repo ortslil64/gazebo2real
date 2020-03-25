@@ -6,13 +6,14 @@ from skimage import io
 from glob import glob
 from tqdm import tqdm
 from gazebo2real_model import Gazebo2Real
+import matplotlib.pyplot as plt
 
 
 
 
 
-train_path='cityscapes_data/cityscapes_data/train/'
-val_path='cityscapes_data/cityscapes_data/val/'
+train_path='cityscapes_data/train/'
+val_path='cityscapes_data/val/'
 
 train_images=[]
 train_masks=[]
@@ -38,7 +39,7 @@ epochs = 200
 n_train = len(train_images)
 n_test = len(val_images)
 
-for epoch in range(epochs):
+for epoch in tqdm(range(epochs)):
 	for ii in range(n_train):
 		model.train(train_images[ii], train_masks[ii])
 	

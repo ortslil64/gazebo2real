@@ -11,23 +11,25 @@ def normalize_v(x):
     return x_out
 
 class Gazebo2Real():
-    def __init__(self, hist = 4, image_shape = (256,256,3)):
+    def __init__(self, image_shape = (256,256,3)):
         self.real2semantic = DeepFilter(input_shape = image_shape,
-                                    output_shape = image_shape,
-                                    lr = 1e-5,
-                                    max_filters = 512)
+                                        output_shape = image_shape,
+                                        lr = 1e-4,
+                                        n0_filters = 64,
+                                        max_filters = 1024)
 	
-	self.semantic2real = DeepFilter(input_shape = image_shape,
-                                    output_shape = image_shape,
-                                    lr = 1e-5,
-                                    max_filters = 512)
+        self.semantic2real = DeepFilter(input_shape = image_shape,
+                                        output_shape = image_shape,
+                                        lr = 1e-4,
+                                        n0_filters = 64,
+                                        max_filters = 1024)
         
         
     def train(self, real_image, semantic_image):
         real_image = np.expand_dims(real_image,0)
-		semantic_image = np.expand_dims(semantic_image,0)
+        semantic_image = np.expand_dims(semantic_image,0)
         self.real2semantic.train_step(real_image, semantic_image, L = 100)
-		self.semantic2real.train_step(semantic_image, real_image, L = 100)
+        self.semantic2real.train_step(semantic_image, real_image, L = 100)
         
     def predict_real(self, semantic_image):
         semantic_image = np.expand_dims(semantic_image,0)
@@ -40,8 +42,8 @@ class Gazebo2Real():
         return semantic_image_hat
     
     def convert(self, gazebo_image):
-		semantic_image_hat = self.predict_semantic(gazebo_image)
-		real_image_hat = self.predict_real(semantic_image_hat)
+        semantic_image_hat = self.predict_semantic(gazebo_image)
+        real_image_hat = self.predict_real(semantic_image_hat)
         return real_image_hat
        
     def save_weights(self, path):
