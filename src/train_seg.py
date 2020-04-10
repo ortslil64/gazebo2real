@@ -231,6 +231,6 @@ plt.show()
 
 
 
-model.save('saved_model/my_model') 
+model.save('segmantation_model/my_model') 
 		
 
