@@ -15,7 +15,7 @@ import cv2
 rospack = rospkg.RosPack()
 
 packadge_path = rospack.get_path('gazebo2real')
-checkpoint_dir = packadge_path+'/src/segmantation_model/my_model'
+checkpoint_dir = packadge_path+'/src/segmantation_model'
 model = tf.keras.models.load_model(checkpoint_dir)
 
 

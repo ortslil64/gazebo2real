@@ -17,7 +17,7 @@ rospack = rospkg.RosPack()
 model = Gazebo2Real()
 
 packadge_path = rospack.get_path('gazebo2real')
-checkpoint_dir = packadge_path+'/src/real2segmantation_model'
+checkpoint_dir = packadge_path+'/src/.weights'
 model.load_weights(checkpoint_dir)
 
 
@@ -39,7 +39,7 @@ if __name__ == '__main__':
         scan_cv_img = tf.image.resize(scan_cv_img, (256,256))
         
         semantic_output = model.predict_semantic(scan_cv_img)
-        real_output = model.predict_real(scan_cv_img)
+        real_output = model.predict_real(semantic_output)
         
         semantic_output = semantic_output*255.0
         semantic_msg_frame = bridge.cv2_to_imgmsg(semantic_output.astype(np.uint8))
