@@ -32,7 +32,7 @@ obj/
 [Dd]ebug*/
 [Rr]elease*/
 Ankh.NoLoad
-
+src/datasets/
 #Tooling
 _ReSharper*/
 *.resharper
