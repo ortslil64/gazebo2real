@@ -14,10 +14,12 @@ import cv2
 
 
 rospack = rospkg.RosPack()
-model = Gazebo2Real()
+
 
 packadge_path = rospack.get_path('gazebo2real')
 checkpoint_dir = packadge_path+'/src/real2segmantation_model'
+checkpoint_dir_p2 = packadge_path+'/src/segmantation_model'
+model = Gazebo2Real(checkpoint_dir = checkpoint_dir_p2)
 model.load_weights(checkpoint_dir)
 
 

@@ -44,7 +44,8 @@ epochs = 100
 
 for epoch in range(epochs):
     for ii in tqdm(range(len(images))):
-        x = images[ii]
+        idx = np.random.choice(len(images))
+        x = images[idx]
         model.train(x)
     ii = np.random.choice(len(images))
     x_test = images[ii]

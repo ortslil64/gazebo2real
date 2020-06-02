@@ -92,7 +92,7 @@ class DeepFilter():
             if n_filters > max_filters:
                 n_filters = max_filters
             if ii == 0:
-                down_stack.append(downsample(n_filters, 4, apply_batchnorm=False, apply_dropout=True))
+                down_stack.append(downsample(n_filters, 4, apply_batchnorm=False, apply_dropout=False))
             else:
                 down_stack.append(downsample(n_filters, 4, apply_batchnorm=False, apply_dropout=True))
         for ii in range(up_steps):
@@ -100,9 +100,9 @@ class DeepFilter():
             if n_filters > max_filters:
                 n_filters = max_filters
             if ii == 0:
-                up_stack.append(upsample(n_filters, 4, apply_batchnorm=False, apply_dropout=True))
+                up_stack.append(upsample(n_filters, 4, apply_batchnorm=False, apply_dropout=False))
             else:
-                up_stack.append(upsample(n_filters, 4, apply_batchnorm=False, apply_dropout=True))
+                up_stack.append(upsample(n_filters, 4, apply_batchnorm=False, apply_dropout=False))
             
         up_stack = reversed(up_stack)
         initializer = tf.random_normal_initializer(0., 0.02)

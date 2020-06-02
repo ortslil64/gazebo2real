@@ -2,7 +2,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import numpy as np
 from models import DeepFilter, normalize, smooth_var, gen_sample
-import rospkg 
+import tensorflow as tf
 
 
 def normalize_v(x):
@@ -64,13 +64,8 @@ class Gazebo2semantic2Real():
  
 
 class Gazebo2Real():
-    def __init__(self, image_shape = (256,256,3)):
-		rospack = rospkg.RosPack()
-		packadge_path = rospack.get_path('gazebo2real')
-		checkpoint_dir = packadge_path+'/src/segmantation_model'
-		self.real2semantic = tf.keras.models.load_model(checkpoint_dir)
-        
-	
+    def __init__(self, image_shape = (256,256,3), checkpoint_dir = 'segmantation_model'):
+        self.real2semantic = tf.keras.models.load_model(checkpoint_dir)
         self.semantic2real = DeepFilter(input_shape = image_shape,
                                         output_shape = image_shape,
                                         lr = 1e-4,
@@ -81,7 +76,7 @@ class Gazebo2Real():
     def train(self, real_image,):
         real_image = np.expand_dims(real_image,0)
         semantic_image = self.real2semantic.predict(real_image)
-        self.semantic2real.train_step(semantic_image, real_image, L = 100)
+        self.semantic2real.train_step(semantic_image, real_image, L = 40)
         
     def predict_real(self, gazebo_image):
         gazebo_image = np.expand_dims(gazebo_image,0)
