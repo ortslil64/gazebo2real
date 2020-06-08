@@ -77,7 +77,7 @@ def preprocess_Bayesian_data_fft(x_old_real, x_old_imag, x_new_real, x_new_imag)
 
 
 class DeepFilter():
-    def __init__(self, input_shape, output_shape, lr = 2e-4, n0_filters = 32, max_filters = 512):
+    def __init__(self, input_shape, output_shape, lr = 2e-4, n0_filters = 64, max_filters = 1024):
         self.input_shape = input_shape
         self.output_shape = output_shape
         self.generator_optimizer = tf.keras.optimizers.Adam(lr,  beta_1=0.5)
@@ -94,7 +94,7 @@ class DeepFilter():
             if ii == 0:
                 down_stack.append(downsample(n_filters, 4, apply_batchnorm=False, apply_dropout=False))
             else:
-                down_stack.append(downsample(n_filters, 4, apply_batchnorm=False, apply_dropout=True))
+                down_stack.append(downsample(n_filters, 4, apply_batchnorm=False, apply_dropout=False))
         for ii in range(up_steps):
             n_filters = n0_filters*(2**ii)
             if n_filters > max_filters:
@@ -102,7 +102,7 @@ class DeepFilter():
             if ii == 0:
                 up_stack.append(upsample(n_filters, 4, apply_batchnorm=False, apply_dropout=False))
             else:
-                up_stack.append(upsample(n_filters, 4, apply_batchnorm=False, apply_dropout=False))
+                up_stack.append(upsample(n_filters, 4, apply_batchnorm=False, apply_dropout=True))
             
         up_stack = reversed(up_stack)
         initializer = tf.random_normal_initializer(0., 0.02)
